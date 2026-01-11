@@ -5,23 +5,33 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
+
+      # خطوة 1: تثبيت Java (مهمة جداً للأندرويد)
+      - uses: actions/setup-java@v3
+        with:
+          distribution: 'zulu'
+          java-version: '17'
+
+      # خطوة 2: تثبيت Python
       - uses: actions/setup-python@v4
         with:
           python-version: '3.11'
-      
-      # هذه هي الأداة التي كانت ناقصة
+
+      # خطوة 3: تثبيت Flutter
       - uses: subosito/flutter-action@v2
         with:
           flutter-version: '3.22.0'
-          
-      - name: Install dependencies
+
+      # خطوة 4: تثبيت المكتبات
+      - name: Install Libraries
         run: pip install flet yfinance
-        
+
+      # خطوة 5: بناء التطبيق
       - name: Build APK
         run: flet build apk --no-android-signing
-        
-      - name: Upload APK
-        uses: actions/upload-artifact@v4
+
+      # خطوة 6: رفع التطبيق لك
+      - uses: actions/upload-artifact@v4
         with:
           name: GoldApp
           path: build/apk/**/*.apk
