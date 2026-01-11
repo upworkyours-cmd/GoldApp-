@@ -6,31 +6,31 @@ jobs:
     steps:
       - uses: actions/checkout@v3
 
-      # خطوة 1: تثبيت Java (مهمة جداً للأندرويد)
+      # 1. تثبيت Java (ضروري جداً للأندرويد)
       - uses: actions/setup-java@v3
         with:
           distribution: 'zulu'
           java-version: '17'
 
-      # خطوة 2: تثبيت Python
+      # 2. تثبيت Python
       - uses: actions/setup-python@v4
         with:
           python-version: '3.11'
 
-      # خطوة 3: تثبيت Flutter
+      # 3. تثبيت Flutter
       - uses: subosito/flutter-action@v2
         with:
-          flutter-version: '3.22.0'
+          flutter-version: '3.19.0'
 
-      # خطوة 4: تثبيت المكتبات
-      - name: Install Libraries
+      # 4. تثبيت المكاتب
+      - name: Install Flet
         run: pip install flet yfinance
 
-      # خطوة 5: بناء التطبيق
+      # 5. بناء التطبيق
       - name: Build APK
         run: flet build apk --no-android-signing
 
-      # خطوة 6: رفع التطبيق لك
+      # 6. رفع الملف لك
       - uses: actions/upload-artifact@v4
         with:
           name: GoldApp
