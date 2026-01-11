@@ -6,32 +6,34 @@ jobs:
     steps:
       - uses: actions/checkout@v3
 
-      # 1. تثبيت Java (ضروري جداً للأندرويد)
+      # 1. تثبيت Java
       - uses: actions/setup-java@v3
         with:
           distribution: 'zulu'
           java-version: '17'
 
-      # 2. تثبيت Python
+      # 2. تثبيت Flutter
+      - uses: subosito/flutter-action@v2
+        with:
+          channel: 'stable'
+
+      # 3. تثبيت Python
       - uses: actions/setup-python@v4
         with:
           python-version: '3.11'
 
-      # 3. تثبيت Flutter
-      - uses: subosito/flutter-action@v2
-        with:
-          flutter-version: '3.19.0'
-
       # 4. تثبيت المكاتب
-      - name: Install Flet
-        run: pip install flet yfinance
+      - name: Install Dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install flet yfinance
 
-      # 5. بناء التطبيق
+      # 5. بناء التطبيق (بدون الجملة التي سببت المشكلة)
       - name: Build APK
-        run: flet build apk --no-android-signing
+        run: flet build apk
 
-      # 6. رفع الملف لك
+      # 6. رفع التطبيق
       - uses: actions/upload-artifact@v4
         with:
-          name: GoldApp
+          name: GoldApp-APK
           path: build/apk/**/*.apk
